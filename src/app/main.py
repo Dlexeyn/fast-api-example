@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.api import ping, heroes
-from app.api.db import engine, metadata, database
+from app.db import engine, metadata, database
 
 metadata.create_all(engine)
 app = FastAPI()
@@ -18,4 +18,4 @@ async def shutdown():
 
 
 app.include_router(ping.router)
-app.include_router(heroes.router)
+app.include_router(heroes.router, prefix="/heroes", tags=["heroes"])

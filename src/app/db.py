@@ -22,7 +22,7 @@ heroes = Table(
     metadata,
     Column("id", Integer, primary_key=True),
     Column("name", String(50)),
-    Column("description", String(50)),
+    Column("description", String(80)),
     Column("created_date", DateTime, default=func.now(), nullable=False)
 )
 
