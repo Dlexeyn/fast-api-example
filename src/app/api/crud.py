@@ -1,5 +1,7 @@
+import logging
+
 from app.db import heroes, database
-from app.model import HeroSchema
+from app.model.Hero import HeroSchema
 
 
 async def post(payload: HeroSchema):
@@ -14,4 +16,20 @@ async def get(id: int):
 
 async def get_all():
     query = heroes.select()
-    return database.fetch_all(query=query)
+    return await database.fetch_all(query=query)
+
+
+async def put(id: int, payload: HeroSchema):
+    query = (
+        heroes
+        .update()
+        .where(id == heroes.c.id)
+        .values(name=payload.name, description=payload.description)
+        .returning(heroes.c.id)
+    )
+    return await database.execute(query=query)
+
+
+async def delete(id: int):
+    query = heroes.delete().where(id == heroes.c.id)
+    return await database.execute(query=query)
